@@ -1,5 +1,6 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
-from typing import Optional
+from typing import Optional, List
+import json
 
 
 class Settings(BaseSettings):
@@ -35,6 +36,14 @@ class Settings(BaseSettings):
         case_sensitive=True,
         extra="allow"
     )
+
+    @property
+    def cors_origins_list(self) -> List[str]:
+        """Parsear CORS_ORIGINS de JSON string a lista"""
+        try:
+            return json.loads(self.CORS_ORIGINS)
+        except (json.JSONDecodeError, TypeError):
+            return ["http://localhost:5173"]
 
 
 settings = Settings()
