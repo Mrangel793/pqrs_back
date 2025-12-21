@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Factura {{ numero_factura }}{% endblock %}
+
+{% block content %}
+<h2>Factura {{ numero_factura }}</h2>
+
+<div class="info-row">
+    <span class="info-label">Fecha:</span> {{ fecha }}
+</div>
+
+<div class="info-row">
+    <span class="info-label">Cliente:</span> {{ cliente }}
+</div>
+
+<table>
+    <thead>
+        <tr>
+            <th>Descripción</th>
+            <th>Cantidad</th>
+            <th>Precio Unitario</th>
+            <th>Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in items %}
+        <tr>
+            <td>{{ item.descripcion }}</td>
+            <td>{{ item.cantidad }}</td>
+            <td>${{ item.precio_unitario }}</td>
+            <td>${{ item.total }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="3" style="text-align: right;"><strong>Total:</strong></td>
+            <td><strong>${{ total }}</strong></td>
+        </tr>
+    </tfoot>
+</table>
+{% endblock %}

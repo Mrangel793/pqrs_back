@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}Notificación de Falla - {{ numero_caso }}{% endblock %}
+
+{% block content %}
+<h2>Notificación de Falla/No Respuesta</h2>
+
+<div class="info-row">
+    <span class="info-label">Fecha:</span> {{ fecha }}
+</div>
+
+<div class="info-row">
+    <span class="info-label">Número de Caso:</span> {{ numero_caso }}
+</div>
+
+<div class="info-row">
+    <span class="info-label">Asunto:</span> {{ asunto }}
+</div>
+
+<div class="info-row">
+    <span class="info-label">Fecha de Vencimiento:</span> {{ fecha_vencimiento }}
+</div>
+
+<div style="margin-top: 30px; padding: 20px; background-color: #fff3cd; border-left: 4px solid #ffc107;">
+    <h3 style="margin-top: 0; color: #856404;">Advertencia</h3>
+    <p>
+        El presente documento notifica que el caso <strong>{{ numero_caso }}</strong> no ha recibido respuesta
+        dentro del plazo establecido o ha presentado una falla en su procesamiento.
+    </p>
+</div>
+
+<div style="margin-top: 30px;">
+    <h3>Descripción del Caso</h3>
+    <p style="text-align: justify;">{{ descripcion }}</p>
+</div>
+
+<div style="margin-top: 30px; padding: 15px; background-color: #f8f9fa; border: 1px solid #dee2e6;">
+    <h3>Acciones Requeridas</h3>
+    <ul>
+        <li>Revisar el estado del caso inmediatamente</li>
+        <li>Proporcionar una respuesta en un plazo máximo de 3 días hábiles</li>
+        <li>Contactar al área responsable para su resolución</li>
+        <li>Actualizar el sistema con el progreso del caso</li>
+    </ul>
+</div>
+
+<div style="margin-top: 30px; font-size: 9pt; color: #666;">
+    <p><strong>Nota:</strong> Este documento ha sido generado automáticamente por el sistema de gestión de PQR.</p>
+</div>
+{% endblock %}

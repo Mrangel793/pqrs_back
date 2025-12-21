@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}{{ tipo }} - {{ numero_caso }}{% endblock %}
+
+{% block content %}
+<h2>{{ tipo }}</h2>
+
+<div class="info-row">
+    <span class="info-label">Fecha:</span> {{ fecha }}
+</div>
+
+<div class="info-row">
+    <span class="info-label">Número de Caso:</span> {{ numero_caso }}
+</div>
+
+<div class="info-row">
+    <span class="info-label">Documento:</span> {{ documento }}
+</div>
+
+<div class="info-row">
+    <span class="info-label">Destinatario:</span> {{ destinatario }}
+</div>
+
+<div style="margin-top: 30px; padding: 20px; border: 1px solid #ddd; background-color: #f9f9f9;">
+    <h3>Certificación</h3>
+    <p>
+        La presente {{ tipo|lower }} certifica la autenticidad del documento mencionado,
+        el cual ha sido debidamente verificado y validado por la autoridad competente.
+    </p>
+    <p style="margin-top: 20px;">
+        Este documento es válido para su presentación ante las autoridades correspondientes.
+    </p>
+</div>
+
+<div style="margin-top: 50px;">
+    <div style="width: 200px; border-top: 1px solid #000; margin: 0 auto; text-align: center; padding-top: 10px;">
+        <p><strong>Firma Autorizada</strong></p>
+    </div>
+</div>
+{% endblock %}
