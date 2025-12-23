@@ -1,0 +1,13 @@
+C:\Users\TECNOPARQUE\Documents\GitHub\pqrs_back\app\api\v1\endpoints\adjuntos.py:10:from app.models.models import Adjunto, Caso
+C:\Users\TECNOPARQUE\Documents\GitHub\pqrs_back\app\api\v1\endpoints\auditoria.py:9:from app.models.models import AuditoriaEvento
+C:\Users\TECNOPARQUE\Documents\GitHub\pqrs_back\app\api\v1\endpoints\auth.py:19:    from app.models.models import Usuario
+C:\Users\TECNOPARQUE\Documents\GitHub\pqrs_back\app\api\v1\endpoints\auth.py:75:        from app.models.models import Usuario
+C:\Users\TECNOPARQUE\Documents\GitHub\pqrs_back\app\api\v1\endpoints\configuracion.py:7:from app.models.models import Configuracion
+C:\Users\TECNOPARQUE\Documents\GitHub\pqrs_back\app\api\v1\endpoints\escalamientos.py:8:from app.models.models import Escalamiento, Caso
+C:\Users\TECNOPARQUE\Documents\GitHub\pqrs_back\app\api\v1\endpoints\reportes.py:8:from app.models.models import Caso, Escalamiento, EstadoCaso, Semaforo
+C:\Users\TECNOPARQUE\Documents\GitHub\pqrs_back\app\api\v1\endpoints\usuarios.py:7:from app.models.models import Usuario
+C:\Users\TECNOPARQUE\Documents\GitHub\pqrs_back\app\core\security.py:83:    from app.models.models import Usuario
+C:\Users\TECNOPARQUE\Documents\GitHub\pqrs_back\app\models\__init__.py:1:from app.models.models import (
+C:\Users\TECNOPARQUE\Documents\GitHub\pqrs_back\app\services\auditoria_service.py:7:from app.models.models import AuditoriaEvento
+C:\Users\TECNOPARQUE\Documents\GitHub\pqrs_back\app\services\caso_service.py:7:from app.models.models import Caso, CasoIdentificador
+C:\Users\TECNOPARQUE\Documents\GitHub\pqrs_back\app\services\ingestion_service.py:9:from app.models.models import Caso, Adjunto

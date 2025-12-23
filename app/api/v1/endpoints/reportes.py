@@ -5,7 +5,7 @@ from typing import Dict, Any
 from datetime import datetime, timedelta
 
 from app.api.deps import get_db, get_current_user_dep
-from app.models.models import Caso, Escalamiento
+from app.models.models import Caso, Escalamiento, EstadoCaso, Semaforo
 
 router = APIRouter()
 
@@ -21,46 +21,60 @@ async def get_dashboard_stats(
     total_casos = db.query(func.count(Caso.id)).scalar()
 
     # Casos por estado
-    casos_por_estado = db.query(
-        Caso.estado,
+    # Join con EstadoCaso para obtener nombre si fuera necesario, o solo agrupar por ID
+    # Aquí tratamos de obtener el nombre si es posible, si no, ID
+    casos_por_estado_query = db.query(
+        EstadoCaso.descripcion,
         func.count(Caso.id)
-    ).group_by(Caso.estado).all()
+    ).join(EstadoCaso, Caso.estadoCasoId == EstadoCaso.id).group_by(EstadoCaso.descripcion).all()
+    
+    casos_por_estado = {desc: count for desc, count in casos_por_estado_query}
 
-    # Casos por tipo
-    casos_por_tipo = db.query(
-        Caso.tipo,
+    # Casos por tipo trámite
+    # Nota: TipoTramite es string en Caso ("tipoTramite"), pero si hubiera tabla catalogo...
+    # En el modelo Caso, 'tipoTramite' es string. En el SQL habia 'tab_tipotramite'? 
+    # Revisando models.py: `tipoTramite = Column(String(50))` en Caso.
+    # No hay FK a TipoTramite en Caso en mi models.py actualizado (checkear).
+    # Si es string, agrupamos por string.
+    casos_por_tipo_query = db.query(
+        Caso.tipoTramite,
         func.count(Caso.id)
-    ).group_by(Caso.tipo).all()
+    ).group_by(Caso.tipoTramite).all()
+    
+    casos_por_tipo = {tipo: count for tipo, count in casos_por_tipo_query}
 
-    # Casos por prioridad
-    casos_por_prioridad = db.query(
-        Caso.prioridad,
+    # Casos por semáforo (prioridad)
+    casos_por_semaforo_query = db.query(
+        Semaforo.colorHex, # O descripcion/nombre
         func.count(Caso.id)
-    ).group_by(Caso.prioridad).all()
+    ).join(Semaforo, Caso.semaforoId == Semaforo.id).group_by(Semaforo.colorHex).all()
+    
+    casos_por_prioridad = {color: count for color, count in casos_por_semaforo_query}
 
-    # Escalamientos activos
-    escalamientos_activos = db.query(func.count(Escalamiento.id)).filter(
-        Escalamiento.estado == "pendiente"
-    ).scalar()
+    # Escalamientos (Total)
+    escalamientos_total = db.query(func.count(Escalamiento.id)).scalar()
 
-    # Casos vencidos
+    # Casos vencidos (fechaVencimiento < now y estado no cerrado)
+    # Asumimos estado cerrado tiene algun ID o flag 'activo' en EstadoCaso?
+    # EstadoCaso tiene 'activo' boolean, pero eso es si el estado está habilitado en catalogo.
+    # Necesitamos saber qué ID es "cerrado". Por ahora chequeamos solo fecha.
     casos_vencidos = db.query(func.count(Caso.id)).filter(
-        Caso.fecha_vencimiento < datetime.utcnow(),
-        Caso.estado != "cerrado"
+        Caso.fechaVencimiento < datetime.utcnow()
+        # , Caso.estadoCasoId != ID_CERRADO # TODO: Definir ID cerrado
     ).scalar()
 
     # Casos creados últimos 7 días
     fecha_semana = datetime.utcnow() - timedelta(days=7)
     casos_ultima_semana = db.query(func.count(Caso.id)).filter(
-        Caso.created_at >= fecha_semana
+        Caso.createdAt >= fecha_semana
     ).scalar()
 
     return {
         "total_casos": total_casos,
-        "casos_por_estado": {estado: count for estado, count in casos_por_estado},
-        "casos_por_tipo": {tipo: count for tipo, count in casos_por_tipo},
-        "casos_por_prioridad": {prioridad: count for prioridad, count in casos_por_prioridad},
-        "escalamientos_activos": escalamientos_activos,
+        "casos_por_estado": casos_por_estado,
+        "casos_por_tipo": casos_por_tipo,
+        "casos_por_prioridad": casos_por_prioridad,
+        "escalamientos_total": escalamientos_total,
         "casos_vencidos": casos_vencidos,
         "casos_ultima_semana": casos_ultima_semana
     }

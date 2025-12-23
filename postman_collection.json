@@ -1,0 +1,596 @@
+{
+	"info": {
+		"_postman_id": "cpanel-web-api-collection",
+		"name": "PQRS API",
+		"description": "API Collection for PQRS System management.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "System",
+			"item": [
+				{
+					"name": "Root Information",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/",
+							"host": ["{{base_url}}"],
+							"path": [""]
+						}
+					}
+				},
+				{
+					"name": "Health Check",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/health",
+							"host": ["{{base_url}}"],
+							"path": ["health"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{ "key": "username", "value": "admin", "type": "text" },
+								{ "key": "password", "value": "admin", "type": "text" }
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/auth/login",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "auth", "login"]
+						}
+					}
+				},
+				{
+					"name": "Refresh Token",
+					"request": {
+						"auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{token}}", "type": "string" } ] },
+						"method": "POST",
+						"header": [ { "key": "Content-Type", "value": "application/json" } ],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"refresh_token\": \"{{refresh_token}}\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/auth/refresh",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "auth", "refresh"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Usuarios",
+			"item": [
+				{
+					"name": "List Users",
+					"request": {
+						"auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{token}}", "type": "string" } ] },
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/usuarios/?skip=0&limit=100",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "usuarios", ""],
+							"query": [
+								{ "key": "skip", "value": "0" },
+								{ "key": "limit", "value": "100" }
+							]
+						}
+					}
+				},
+				{
+					"name": "Create User",
+					"request": {
+						"auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{token}}", "type": "string" } ] },
+						"method": "POST",
+						"header": [ { "key": "Content-Type", "value": "application/json" } ],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"testuser\",\n  \"email\": \"test@example.com\",\n  \"password\": \"password123\",\n  \"nombre_completo\": \"Test User\",\n  \"rol\": \"analista\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/usuarios/",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "usuarios", ""]
+						}
+					}
+				},
+				{
+					"name": "Get User",
+					"request": {
+						"auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{token}}", "type": "string" } ] },
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/usuarios/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "usuarios", "1"]
+						}
+					}
+				},
+				{
+					"name": "Update User",
+					"request": {
+						"auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{token}}", "type": "string" } ] },
+						"method": "PUT",
+						"header": [ { "key": "Content-Type", "value": "application/json" } ],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nombre_completo\": \"Updated Name\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/usuarios/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "usuarios", "1"]
+						}
+					}
+				},
+				{
+					"name": "Delete User",
+					"request": {
+						"auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{token}}", "type": "string" } ] },
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/usuarios/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "usuarios", "1"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Casos",
+			"item": [
+				{
+					"name": "List Casos",
+					"request": {
+						"auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{token}}", "type": "string" } ] },
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/casos/?page=1&page_size=10",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "casos", ""],
+							"query": [
+								{ "key": "page", "value": "1" },
+								{ "key": "page_size", "value": "10" }
+							]
+						}
+					}
+				},
+				{
+					"name": "Create Caso",
+					"request": {
+						"auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{token}}", "type": "string" } ] },
+						"method": "POST",
+						"header": [ { "key": "Content-Type", "value": "application/json" } ],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"tipo\": \"peticion\",\n  \"asunto\": \"Asunto del caso\",\n  \"descripcion\": \"Descripción detallada del caso\",\n  \"prioridad\": \"media\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/casos/",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "casos", ""]
+						}
+					}
+				},
+				{
+					"name": "Get Caso",
+					"request": {
+						"auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{token}}", "type": "string" } ] },
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/casos/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "casos", "1"]
+						}
+					}
+				},
+				{
+					"name": "Update Caso",
+					"request": {
+						"auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{token}}", "type": "string" } ] },
+						"method": "PUT",
+						"header": [ { "key": "Content-Type", "value": "application/json" } ],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"estado\": \"en_proceso\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/casos/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "casos", "1"]
+						}
+					}
+				},
+				{
+					"name": "Delete Caso",
+					"request": {
+						"auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{token}}", "type": "string" } ] },
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/casos/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "casos", "1"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Escalamientos",
+			"item": [
+				{
+					"name": "List Escalamientos",
+					"request": {
+						"auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{token}}", "type": "string" } ] },
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/escalamientos/",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "escalamientos", ""]
+						}
+					}
+				},
+				{
+					"name": "Create Escalamiento",
+					"request": {
+						"auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{token}}", "type": "string" } ] },
+						"method": "POST",
+						"header": [ { "key": "Content-Type", "value": "application/json" } ],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"caso_id\": 1,\n  \"nivel\": 2,\n  \"motivo\": \"Requiere aprobación superior\",\n  \"escalado_a\": \"supervisor@example.com\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/escalamientos/",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "escalamientos", ""]
+						}
+					}
+				},
+				{
+					"name": "Get Escalamiento",
+					"request": {
+						"auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{token}}", "type": "string" } ] },
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/escalamientos/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "escalamientos", "1"]
+						}
+					}
+				},
+				{
+					"name": "Update Escalamiento",
+					"request": {
+						"auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{token}}", "type": "string" } ] },
+						"method": "PUT",
+						"header": [ { "key": "Content-Type", "value": "application/json" } ],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"estado\": \"aprobado\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/escalamientos/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "escalamientos", "1"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Adjuntos",
+			"item": [
+				{
+					"name": "List Adjuntos de Caso",
+					"request": {
+						"auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{token}}", "type": "string" } ] },
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/adjuntos/caso/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "adjuntos", "caso", "1"]
+						}
+					}
+				},
+				{
+					"name": "Upload Adjunto",
+					"request": {
+						"auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{token}}", "type": "string" } ] },
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{ "key": "file", "type": "file", "src": [] }
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/adjuntos/?caso_id=1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "adjuntos", ""],
+							"query": [
+                                { "key": "caso_id", "value": "1" }
+                            ]
+						}
+					}
+				},
+				{
+					"name": "Download Adjunto",
+					"request": {
+						"auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{token}}", "type": "string" } ] },
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/adjuntos/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "adjuntos", "1"]
+						}
+					}
+				},
+				{
+					"name": "Delete Adjunto",
+					"request": {
+						"auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{token}}", "type": "string" } ] },
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/adjuntos/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "adjuntos", "1"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "PDF",
+			"item": [
+				{
+					"name": "Generate Factura",
+					"request": {
+						"auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{token}}", "type": "string" } ] },
+						"method": "POST",
+						"header": [ { "key": "Content-Type", "value": "application/json" } ],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"numero_factura\": \"F-001\",\n  \"cliente\": \"Cliente Test\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/pdf/factura",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "pdf", "factura"]
+						}
+					}
+				},
+				{
+					"name": "Generate Postilla/Apostilla",
+					"request": {
+						"auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{token}}", "type": "string" } ] },
+						"method": "POST",
+						"header": [ { "key": "Content-Type", "value": "application/json" } ],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"numero_caso\": \"C-001\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/pdf/postilla-apostilla",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "pdf", "postilla-apostilla"]
+						}
+					}
+				},
+				{
+					"name": "Generate Falla/No Respuesta",
+					"request": {
+						"auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{token}}", "type": "string" } ] },
+						"method": "POST",
+						"header": [ { "key": "Content-Type", "value": "application/json" } ],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"numero_caso\": \"C-001\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/pdf/falla-no-respuesta",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "pdf", "falla-no-respuesta"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Correo",
+			"item": [
+				{
+					"name": "Send Email",
+					"request": {
+						"auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{token}}", "type": "string" } ] },
+						"method": "POST",
+						"header": [ { "key": "Content-Type", "value": "application/json" } ],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"to\": [\"user@example.com\"],\n  \"subject\": \"Test Email\",\n  \"body\": \"This is a test email.\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/correo/send",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "correo", "send"]
+						}
+					}
+				},
+				{
+					"name": "Get Inbox",
+					"request": {
+						"auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{token}}", "type": "string" } ] },
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/correo/inbox?top=10",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "correo", "inbox"],
+							"query": [ { "key": "top", "value": "10" } ]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Configuracion",
+			"item": [
+				{
+					"name": "List Configs",
+					"request": {
+						"auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{token}}", "type": "string" } ] },
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/configuracion/",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "configuracion", ""]
+						}
+					}
+				},
+				{
+					"name": "Get Config",
+					"request": {
+						"auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{token}}", "type": "string" } ] },
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/configuracion/key_name",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "configuracion", "key_name"]
+						}
+					}
+				},
+				{
+					"name": "Update Config",
+					"request": {
+						"auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{token}}", "type": "string" } ] },
+						"method": "PUT",
+						"header": [ { "key": "Content-Type", "value": "application/json" } ],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"valor\": \"new_value\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/configuracion/key_name",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "configuracion", "key_name"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Auditoria",
+			"item": [
+				{
+					"name": "List Auditoria",
+					"request": {
+						"auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{token}}", "type": "string" } ] },
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/auditoria/",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "auditoria", ""]
+						}
+					}
+				},
+				{
+					"name": "Get Auditoria Caso",
+					"request": {
+						"auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{token}}", "type": "string" } ] },
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/auditoria/caso/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "auditoria", "caso", "1"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Reportes",
+			"item": [
+				{
+					"name": "Dashboard Stats",
+					"request": {
+						"auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{token}}", "type": "string" } ] },
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/reportes/dashboard",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "reportes", "dashboard"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Ingestion",
+			"item": [
+				{
+					"name": "Process Ingestion",
+					"request": {
+						"auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{token}}", "type": "string" } ] },
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/ingestion/process",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "ingestion", "process"]
+						}
+					}
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8000"
+		},
+		{
+			"key": "token",
+			"value": ""
+		},
+		{
+			"key": "refresh_token",
+			"value": ""
+		}
+	]
+}

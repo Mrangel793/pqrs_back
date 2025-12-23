@@ -1,0 +1,63 @@
+C:\Users\TECNOPARQUE\Documents\GitHub\pqrs_back\app\api\v1\router.py:12:    auditoria,
+C:\Users\TECNOPARQUE\Documents\GitHub\pqrs_back\app\api\v1\router.py:28:api_router.include_router(auditoria.router, prefix="/auditoria", tags=["Auditor?a"])
+C:\Users\TECNOPARQUE\Documents\GitHub\pqrs_back\app\api\v1\endpoints\auditoria.py:8:from app.schemas.auditoria import AuditoriaResponse
+C:\Users\TECNOPARQUE\Documents\GitHub\pqrs_back\app\api\v1\endpoints\auditoria.py:9:from app.models.models import AuditoriaEvento
+C:\Users\TECNOPARQUE\Documents\GitHub\pqrs_back\app\api\v1\endpoints\auditoria.py:15:@router.get("/", response_model=List[AuditoriaResponse])
+C:\Users\TECNOPARQUE\Documents\GitHub\pqrs_back\app\api\v1\endpoints\auditoria.py:16:async def list_auditoria(
+C:\Users\TECNOPARQUE\Documents\GitHub\pqrs_back\app\api\v1\endpoints\auditoria.py:27:    query = db.query(AuditoriaEvento)
+C:\Users\TECNOPARQUE\Documents\GitHub\pqrs_back\app\api\v1\endpoints\auditoria.py:30:        query = query.filter(AuditoriaEvento.usuarioId == usuario_id)
+C:\Users\TECNOPARQUE\Documents\GitHub\pqrs_back\app\api\v1\endpoints\auditoria.py:32:        query = query.filter(AuditoriaEvento.casoId == caso_id)
+C:\Users\TECNOPARQUE\Documents\GitHub\pqrs_back\app\api\v1\endpoints\auditoria.py:34:        query = query.filter(AuditoriaEvento.tipoAccionId == tipo_accion_id)
+C:\Users\TECNOPARQUE\Documents\GitHub\pqrs_back\app\api\v1\endpoints\auditoria.py:36:        query = query.filter(AuditoriaEvento.fechaEvento >= fecha_desde)
+C:\Users\TECNOPARQUE\Documents\GitHub\pqrs_back\app\api\v1\endpoints\auditoria.py:38:    auditoria = query.order_by(AuditoriaEvento.fechaEvento.desc()).offset(skip).limit(limit).all()
+C:\Users\TECNOPARQUE\Documents\GitHub\pqrs_back\app\api\v1\endpoints\auditoria.py:39:    return auditoria
+C:\Users\TECNOPARQUE\Documents\GitHub\pqrs_back\app\api\v1\endpoints\auditoria.py:42:@router.get("/caso/{caso_id}", response_model=List[AuditoriaResponse])
+C:\Users\TECNOPARQUE\Documents\GitHub\pqrs_back\app\api\v1\endpoints\auditoria.py:43:async def get_auditoria_caso(
+C:\Users\TECNOPARQUE\Documents\GitHub\pqrs_back\app\api\v1\endpoints\auditoria.py:49:    auditoria = db.query(AuditoriaEvento).filter(AuditoriaEvento.casoId == caso_id).order_by(AuditoriaEvento.fechaEvento.desc()).all()
+C:\Users\TECNOPARQUE\Documents\GitHub\pqrs_back\app\api\v1\endpoints\auditoria.py:50:    return auditoria
+C:\Users\TECNOPARQUE\Documents\GitHub\pqrs_back\app\api\v1\endpoints\auditoria.py:53:@router.get("/usuario/{usuario_id}", response_model=List[AuditoriaResponse])
+C:\Users\TECNOPARQUE\Documents\GitHub\pqrs_back\app\api\v1\endpoints\auditoria.py:54:async def get_auditoria_usuario(
+C:\Users\TECNOPARQUE\Documents\GitHub\pqrs_back\app\api\v1\endpoints\auditoria.py:61:    auditoria = db.query(AuditoriaEvento).filter(
+C:\Users\TECNOPARQUE\Documents\GitHub\pqrs_back\app\api\v1\endpoints\auditoria.py:62:        AuditoriaEvento.usuarioId == usuario_id
+C:\Users\TECNOPARQUE\Documents\GitHub\pqrs_back\app\api\v1\endpoints\auditoria.py:63:    ).order_by(AuditoriaEvento.fechaEvento.desc()).limit(limit).all()
+C:\Users\TECNOPARQUE\Documents\GitHub\pqrs_back\app\api\v1\endpoints\auditoria.py:64:    return auditoria
+C:\Users\TECNOPARQUE\Documents\GitHub\pqrs_back\app\api\v1\endpoints\casos.py:10:from app.services.auditoria_service import auditoria_service
+C:\Users\TECNOPARQUE\Documents\GitHub\pqrs_back\app\api\v1\endpoints\casos.py:70:    auditoria_service.registrar_accion(
+C:\Users\TECNOPARQUE\Documents\GitHub\pqrs_back\app\api\v1\endpoints\casos.py:95:    # Auditoria
+C:\Users\TECNOPARQUE\Documents\GitHub\pqrs_back\app\api\v1\endpoints\casos.py:96:    auditoria_service.registrar_accion(
+C:\Users\TECNOPARQUE\Documents\GitHub\pqrs_back\app\api\v1\endpoints\casos.py:119:    # Auditoria
+C:\Users\TECNOPARQUE\Documents\GitHub\pqrs_back\app\api\v1\endpoints\casos.py:120:    auditoria_service.registrar_accion(
+C:\Users\TECNOPARQUE\Documents\GitHub\pqrs_back\app\api\v1\endpoints\escalamientos.py:9:# from app.services.auditoria_service import auditoria_service
+C:\Users\TECNOPARQUE\Documents\GitHub\pqrs_back\app\models\models.py:82:    auditorias = relationship("AuditoriaEvento", back_populates="tipo_accion")
+C:\Users\TECNOPARQUE\Documents\GitHub\pqrs_back\app\models\models.py:102:    auditorias = relationship("AuditoriaEvento", back_populates="usuario")
+C:\Users\TECNOPARQUE\Documents\GitHub\pqrs_back\app\models\models.py:164:    auditorias = relationship("AuditoriaEvento", back_populates="caso", cascade="all, delete-orphan")
+C:\Users\TECNOPARQUE\Documents\GitHub\pqrs_back\app\models\models.py:238:class AuditoriaEvento(Base):
+C:\Users\TECNOPARQUE\Documents\GitHub\pqrs_back\app\models\models.py:239:    __tablename__ = "tab_auditoriaevento"
+C:\Users\TECNOPARQUE\Documents\GitHub\pqrs_back\app\models\models.py:250:    caso = relationship("Caso", back_populates="auditorias")
+C:\Users\TECNOPARQUE\Documents\GitHub\pqrs_back\app\models\models.py:251:    usuario = relationship("Usuario", back_populates="auditorias")
+C:\Users\TECNOPARQUE\Documents\GitHub\pqrs_back\app\models\models.py:252:    tipo_accion = relationship("TipoAccion", back_populates="auditorias")
+C:\Users\TECNOPARQUE\Documents\GitHub\pqrs_back\app\models\__init__.py:7:    AuditoriaEvento
+C:\Users\TECNOPARQUE\Documents\GitHub\pqrs_back\app\models\__init__.py:16:    "AuditoriaEvento"
+C:\Users\TECNOPARQUE\Documents\GitHub\pqrs_back\app\schemas\auditoria.py:11:class AuditoriaBase(BaseModel):
+C:\Users\TECNOPARQUE\Documents\GitHub\pqrs_back\app\schemas\auditoria.py:16:class AuditoriaCreate(AuditoriaBase):
+C:\Users\TECNOPARQUE\Documents\GitHub\pqrs_back\app\schemas\auditoria.py:20:class AuditoriaResponse(AuditoriaBase):
+C:\Users\TECNOPARQUE\Documents\GitHub\pqrs_back\app\schemas\__init__.py:8:from app.schemas.auditoria import AuditoriaCreate, AuditoriaResponse
+C:\Users\TECNOPARQUE\Documents\GitHub\pqrs_back\app\schemas\__init__.py:28:    "AuditoriaCreate",
+C:\Users\TECNOPARQUE\Documents\GitHub\pqrs_back\app\schemas\__init__.py:29:    "AuditoriaResponse",
+C:\Users\TECNOPARQUE\Documents\GitHub\pqrs_back\app\services\auditoria_service.py:7:from app.models.models import AuditoriaEvento
+C:\Users\TECNOPARQUE\Documents\GitHub\pqrs_back\app\services\auditoria_service.py:8:# from app.schemas.auditoria import AuditoriaFilter # Filter is generic or custom
+C:\Users\TECNOPARQUE\Documents\GitHub\pqrs_back\app\services\auditoria_service.py:10:class AuditoriaService:
+C:\Users\TECNOPARQUE\Documents\GitHub\pqrs_back\app\services\auditoria_service.py:24:    ) -> AuditoriaEvento:
+C:\Users\TECNOPARQUE\Documents\GitHub\pqrs_back\app\services\auditoria_service.py:50:        auditoria = AuditoriaEvento(
+C:\Users\TECNOPARQUE\Documents\GitHub\pqrs_back\app\services\auditoria_service.py:59:        db.add(auditoria)
+C:\Users\TECNOPARQUE\Documents\GitHub\pqrs_back\app\services\auditoria_service.py:62:            db.refresh(auditoria)
+C:\Users\TECNOPARQUE\Documents\GitHub\pqrs_back\app\services\auditoria_service.py:64:            print(f"Error registrando auditoria: {e}")
+C:\Users\TECNOPARQUE\Documents\GitHub\pqrs_back\app\services\auditoria_service.py:68:        return auditoria
+C:\Users\TECNOPARQUE\Documents\GitHub\pqrs_back\app\services\auditoria_service.py:70:    def get_auditoria(self, db: Session, skip: int=0, limit: int=100, filters: Any=None):
+C:\Users\TECNOPARQUE\Documents\GitHub\pqrs_back\app\services\auditoria_service.py:75:        return db.query(AuditoriaEvento).filter(AuditoriaEvento.casoId == caso_id).order_by(AuditoriaEvento.fechaEvento).all()
+C:\Users\TECNOPARQUE\Documents\GitHub\pqrs_back\app\services\auditoria_service.py:78:        return db.query(AuditoriaEvento).filter(
+C:\Users\TECNOPARQUE\Documents\GitHub\pqrs_back\app\services\auditoria_service.py:79:            AuditoriaEvento.usuarioId == usuario_id
+C:\Users\TECNOPARQUE\Documents\GitHub\pqrs_back\app\services\auditoria_service.py:80:        ).order_by(AuditoriaEvento.fechaEvento.desc()).limit(limit).all()
+C:\Users\TECNOPARQUE\Documents\GitHub\pqrs_back\app\services\auditoria_service.py:83:auditoria_service = AuditoriaService()
+C:\Users\TECNOPARQUE\Documents\GitHub\pqrs_back\app\services\__init__.py:14:from app.services.auditoria_service import auditoria_service
+C:\Users\TECNOPARQUE\Documents\GitHub\pqrs_back\app\services\__init__.py:27:    "auditoria_service"

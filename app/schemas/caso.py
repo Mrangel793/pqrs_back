@@ -1,69 +1,99 @@
-from pydantic import BaseModel
-from typing import Optional, List
+from pydantic import BaseModel, EmailStr, UUID4, Field
+from typing import Optional, List, Any
 from datetime import datetime
+from app.schemas.catalogo import EstadoCasoResponse, SemaforoResponse, TipoPDFResponse, EstadoEnvioResponse
+from app.schemas.usuario import UsuarioResponse
 
+# ==========================================
+# Esquemas para Casos
+# ==========================================
+
+class CasoIdentificadorBase(BaseModel):
+    clave: str
+    valor: str
+
+class CasoIdentificadorResponse(CasoIdentificadorBase):
+    id: int
+    class Config:
+        from_attributes = True
+
+class FuenteCorreoResponse(BaseModel):
+    id: UUID4
+    direccion: str
+    fechaCorreo: datetime
+    remitente: str
+    asunto: Optional[str] = None
+    snippet: Optional[str] = None
+    class Config:
+        from_attributes = True
 
 class CasoBase(BaseModel):
-    """Schema base de caso"""
-    numero_caso: str
-    tipo: str
-    asunto: str
-    descripcion: Optional[str] = None
-    prioridad: str = "media"
-
-
-class CasoCreate(BaseModel):
-    """Schema para crear caso"""
-    tipo: str
-    asunto: str
-    descripcion: Optional[str] = None
-    prioridad: str = "media"
-    email_origen: Optional[str] = None
-    usuario_asignado_id: Optional[int] = None
-
-
-class CasoUpdate(BaseModel):
-    """Schema para actualizar caso"""
-    asunto: Optional[str] = None
-    descripcion: Optional[str] = None
-    estado: Optional[str] = None
-    prioridad: Optional[str] = None
-    usuario_asignado_id: Optional[int] = None
-    respuesta: Optional[str] = None
-
-
-class CasoResponse(CasoBase):
-    """Schema de respuesta de caso"""
-    id: int
-    estado: str
-    fecha_recepcion: datetime
-    fecha_vencimiento: Optional[datetime] = None
-    fecha_cierre: Optional[datetime] = None
-    usuario_asignado_id: Optional[int] = None
-    email_origen: Optional[str] = None
-    respuesta: Optional[str] = None
-    created_at: datetime
-    updated_at: datetime
-
-    class Config:
-        from_attributes = True
-
-
-class CasoDetalle(CasoResponse):
-    """Schema detallado de caso con relaciones"""
-    escalamientos: List = []
-    adjuntos: List = []
-
-    class Config:
-        from_attributes = True
-
+    radicado: str
+    fechaRecepcion: datetime
+    fechaEscalamientoTecnologia: Optional[datetime] = None
+    fechaVencimiento: datetime
+    
+    peticionarioNombre: str
+    peticionarioCorreo: EmailStr
+    
+    detalleSolicitud: str
+    tipoTramite: str
+    
+    estadoCasoId: int
+    semaforoId: int
+    responsableId: Optional[int] = None
+    
+    destinatarioCorreo: EmailStr
+    
+    respuestaContenido: Optional[str] = None
+    respuestaTextoAdicional: Optional[str] = None
+    tipoPDFId: Optional[int] = None
+    
+    correoHiloId: str
+    correoMensajeSalidaId: Optional[str] = None
+    correoEnvioEstadoId: int = 1
+    
+class CasoCreate(CasoBase):
+    # Identificadores opcionales al crear
+    identificadores: Optional[List[CasoIdentificadorBase]] = []
 
 class CasoFilter(BaseModel):
-    """Filtros para búsqueda de casos"""
-    tipo: Optional[str] = None
-    estado: Optional[str] = None
-    prioridad: Optional[str] = None
-    usuario_asignado_id: Optional[int] = None
-    fecha_desde: Optional[datetime] = None
-    fecha_hasta: Optional[datetime] = None
+    tipoTramite: Optional[str] = None
+    estadoCasoId: Optional[int] = None
+    semaforoId: Optional[int] = None
+    responsableId: Optional[int] = None
+    fechaDesde: Optional[datetime] = None
+    fechaHasta: Optional[datetime] = None
     busqueda: Optional[str] = None
+    radicado: Optional[str] = None
+
+class CasoUpdate(BaseModel):
+    estadoCasoId: Optional[int] = None
+    responsableId: Optional[int] = None
+    respuestaContenido: Optional[str] = None
+    respuestaTextoAdicional: Optional[str] = None
+    tipoPDFId: Optional[int] = None
+    correoMensajeSalidaId: Optional[str] = None
+    correoEnvioEstadoId: Optional[int] = None
+    correoEnvioFecha: Optional[datetime] = None
+
+class CasoResponse(CasoBase):
+    id: UUID4
+    createdAt: datetime
+    updatedAt: datetime
+    
+    # Relaciones expandidas
+    estado_caso: Optional[EstadoCasoResponse] = None
+    semaforo: Optional[SemaforoResponse] = None
+    responsable: Optional[UsuarioResponse] = None
+    tipo_pdf: Optional[TipoPDFResponse] = None
+    correo_envio_estado: Optional[EstadoEnvioResponse] = None
+    
+    identificadores: List[CasoIdentificadorResponse] = []
+    
+    class Config:
+        from_attributes = True
+
+class CasoListResponse(BaseModel):
+    total: int
+    items: List[CasoResponse]
