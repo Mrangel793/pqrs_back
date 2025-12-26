@@ -4,7 +4,7 @@ from app.models.models import (
     Escalamiento,
     Adjunto,
     Configuracion,
-    Auditoria
+    AuditoriaEvento
 )
 
 __all__ = [
@@ -13,5 +13,5 @@ __all__ = [
     "Escalamiento",
     "Adjunto",
     "Configuracion",
-    "Auditoria"
+    "AuditoriaEvento"
 ]

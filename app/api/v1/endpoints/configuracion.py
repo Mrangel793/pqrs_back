@@ -17,7 +17,7 @@ async def list_configuraciones(
     current_user = Depends(get_admin_user)
 ):
     """Listar configuraciones"""
-    configs = db.query(Configuracion).offset(skip).limit(limit).all()
+    configs = db.query(Configuracion).order_by(Configuracion.clave).offset(skip).limit(limit).all()
     return configs
 
 
@@ -46,6 +46,9 @@ async def create_configuracion(
         raise HTTPException(status_code=400, detail="La configuración ya existe")
 
     db_config = Configuracion(**config.model_dump())
+    # Opcional: setear updatedBy en creación si se desea
+    # db_config.updatedBy = current_user.id 
+    
     db.add(db_config)
     db.commit()
     db.refresh(db_config)
@@ -67,6 +70,9 @@ async def update_configuracion(
     update_data = config_update.model_dump(exclude_unset=True)
     for field, value in update_data.items():
         setattr(db_config, field, value)
+
+    # Actualizar auditoría
+    db_config.updatedBy = current_user.id
 
     db.commit()
     db.refresh(db_config)

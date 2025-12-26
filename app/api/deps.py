@@ -22,8 +22,11 @@ def get_current_user_dep(current_user = Depends(get_current_active_user)):
 
 def get_admin_user(current_user = Depends(get_current_active_user)):
     """Dependency para verificar usuario admin"""
-    if current_user.get("rol") != "admin":
-        raise HTTPException(
+    # Como no hay campo 'rol' en la tabla, validamos por correo específico o permitimos todos por ahora
+    # Ajustar según lógica de negocio real
+    allowed_admins = ["admin@entidad.gov.co"]
+    if current_user.correo not in allowed_admins:
+         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="No tiene permisos de administrador"
         )

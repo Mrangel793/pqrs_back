@@ -1,5 +1,8 @@
 from jinja2 import Environment, FileSystemLoader
-from weasyprint import HTML
+def generar_pdf(html_content: str, output_path: str):
+    from weasyprint import HTML
+    HTML(string=html_content).write_pdf(output_path)
+
 import os
 from datetime import datetime
 from typing import Dict, Any

@@ -1,36 +1,29 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, UUID4
 from typing import Optional
 from datetime import datetime
+from app.schemas.usuario import UsuarioResponse
 
+# ==========================================
+# Esquemas para Escalamientos
+# ==========================================
 
 class EscalamientoBase(BaseModel):
-    """Schema base de escalamiento"""
-    caso_id: int
-    nivel: int
-    motivo: str
-    escalado_a: str
-
+    observacion: str
 
 class EscalamientoCreate(EscalamientoBase):
-    """Schema para crear escalamiento"""
-    pass
-
-
-class EscalamientoUpdate(BaseModel):
-    """Schema para actualizar escalamiento"""
-    estado: Optional[str] = None
-    resolucion: Optional[str] = None
-
+    casoId: UUID4
+    aUsuarioId: int
 
 class EscalamientoResponse(EscalamientoBase):
-    """Schema de respuesta de escalamiento"""
     id: int
-    fecha_escalamiento: datetime
-    estado: str
-    resolucion: Optional[str] = None
-    fecha_resolucion: Optional[datetime] = None
-    created_at: datetime
-    updated_at: datetime
-
+    casoId: UUID4
+    deUsuarioId: int
+    aUsuarioId: int
+    fechaEscalamiento: datetime
+    
+    # Relaciones
+    de_usuario: Optional[UsuarioResponse] = None
+    a_usuario: Optional[UsuarioResponse] = None
+    
     class Config:
         from_attributes = True

@@ -18,7 +18,7 @@ async def list_usuarios(
     current_user = Depends(get_current_user_dep)
 ):
     """Listar usuarios"""
-    usuarios = db.query(Usuario).offset(skip).limit(limit).all()
+    usuarios = db.query(Usuario).order_by(Usuario.id).offset(skip).limit(limit).all()
     return usuarios
 
 
@@ -43,16 +43,14 @@ async def create_usuario(
 ):
     """Crear nuevo usuario"""
     # Verificar si ya existe
-    existing = db.query(Usuario).filter(Usuario.username == usuario.username).first()
+    existing = db.query(Usuario).filter(Usuario.correo == usuario.correo).first()
     if existing:
-        raise HTTPException(status_code=400, detail="El usuario ya existe")
+        raise HTTPException(status_code=400, detail="El correo ya está registrado")
 
     db_usuario = Usuario(
-        username=usuario.username,
-        email=usuario.email,
-        hashed_password=get_password_hash(usuario.password),
-        nombre_completo=usuario.nombre_completo,
-        rol=usuario.rol
+        nombre=usuario.nombre,
+        correo=usuario.correo,
+        passwordHash=get_password_hash(usuario.password),
     )
     db.add(db_usuario)
     db.commit()
@@ -73,6 +71,13 @@ async def update_usuario(
         raise HTTPException(status_code=404, detail="Usuario no encontrado")
 
     update_data = usuario_update.model_dump(exclude_unset=True)
+    
+    # Manejo especial para contraseña
+    if "password" in update_data:
+        password = update_data.pop("password")
+        if password:
+             db_usuario.passwordHash = get_password_hash(password)
+
     for field, value in update_data.items():
         setattr(db_usuario, field, value)
 

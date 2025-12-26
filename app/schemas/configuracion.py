@@ -1,32 +1,34 @@
 from pydantic import BaseModel
 from typing import Optional
 from datetime import datetime
+from app.schemas.usuario import UsuarioResponse
 
+# ==========================================
+# Esquemas para Configuración
+# ==========================================
 
 class ConfiguracionBase(BaseModel):
-    """Schema base de configuración"""
     clave: str
-    valor: Optional[str] = None
+    valor: str
+    tipoDato: str = "STRING"
     descripcion: Optional[str] = None
-    tipo: str = "string"
-
+    editable: bool = True
 
 class ConfiguracionCreate(ConfiguracionBase):
-    """Schema para crear configuración"""
     pass
 
-
 class ConfiguracionUpdate(BaseModel):
-    """Schema para actualizar configuración"""
     valor: Optional[str] = None
     descripcion: Optional[str] = None
-
+    # clave y tipoDato usualmente no se cambian libremente
 
 class ConfiguracionResponse(ConfiguracionBase):
-    """Schema de respuesta de configuración"""
     id: int
-    created_at: datetime
-    updated_at: datetime
+    updatedAt: datetime
+    updatedBy: Optional[int] = None
+    
+    # Relaciones - Nota: en modelo dejamos usuario_modificador comentado, si se descomenta se agrega aquí
+    # usuario_modificador: Optional[UsuarioResponse] = None
 
     class Config:
         from_attributes = True
