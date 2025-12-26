@@ -1,9 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException, status, Body, Request
-from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 
 from app.api.deps import get_db
-from app.schemas.usuario import Token, UsuarioLogin, RefreshTokenRequest
+from app.schemas.usuario import Token, UsuarioLogin, RefreshTokenRequest, LoginResponse
 from app.core.security import verify_password, create_access_token, create_refresh_token
 from app.services.session_service import SessionService
 from app.utils.request_utils import get_client_ip, get_user_agent
@@ -15,19 +14,19 @@ logger = logging.getLogger(__name__)
 router = APIRouter()
 
 
-@router.post("/login", response_model=Token)
+@router.post("/login", response_model=LoginResponse)
 async def login(
     request: Request,
-    form_data: OAuth2PasswordRequestForm = Depends(),
+    user_data: UsuarioLogin,
     db: Session = Depends(get_db)
 ):
     """Endpoint de login"""
-    # Buscar usuario por correo (usando form_data.username como correo)
+    # Buscar usuario por correo
     from app.models.models import Usuario
-    user = db.query(Usuario).filter(Usuario.correo == form_data.username).first()
+    user = db.query(Usuario).filter(Usuario.correo == user_data.correo).first()
 
     # Verificar credenciales
-    if not user or not verify_password(form_data.password, user.passwordHash):
+    if not user or not verify_password(user_data.password, user.passwordHash):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Correo o contraseña incorrectos",
@@ -68,9 +67,12 @@ async def login(
         logger.error(f"Error al crear sesión para usuario {user.id}: {str(e)}")
 
     return {
-        "access_token": access_token, 
-        "refresh_token": refresh_token,
-        "token_type": "bearer"
+        "user": user,
+        "token": {
+            "access_token": access_token, 
+            "refresh_token": refresh_token,
+            "token_type": "bearer"
+        }
     }
 
 
