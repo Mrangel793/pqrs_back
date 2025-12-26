@@ -46,6 +46,11 @@ class Token(BaseModel):
 class TokenData(BaseModel):
     correo: Optional[str] = None
 
+
 class RefreshTokenRequest(BaseModel):
     refresh_token: str
+
+class LoginResponse(BaseModel):
+    user: UsuarioResponse
+    token: Token
 
