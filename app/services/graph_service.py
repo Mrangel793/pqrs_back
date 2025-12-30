@@ -33,7 +33,7 @@ class GraphService:
                 self.access_token = response.json()["access_token"]
                 return self.access_token
             else:
-                raise EmailException("Error obteniendo token de acceso")
+                raise EmailException(f"Error obteniendo token de acceso: {response.status_code} - {response.text}")
 
     async def get_messages(
         self,
@@ -58,7 +58,7 @@ class GraphService:
             if response.status_code == 200:
                 return response.json().get("value", [])
             else:
-                raise EmailException("Error obteniendo mensajes")
+                raise EmailException(f"Error obteniendo mensajes: {response.status_code} - {response.text}")
 
     async def get_message_attachments(self, message_id: str) -> List[Dict[str, Any]]:
         """Obtener adjuntos de un mensaje"""
@@ -73,7 +73,7 @@ class GraphService:
             if response.status_code == 200:
                 return response.json().get("value", [])
             else:
-                raise EmailException("Error obteniendo adjuntos")
+                raise EmailException(f"Error obteniendo adjuntos: {response.status_code} - {response.text}")
 
     async def send_message(
         self,
